@@ -2,33 +2,27 @@
 #include <fstream>
 #include <pwd.h>
 #include <unistd.h>
+
 #include <Vector_picture_static.h>
+#include <time_measure.h>
 
 
-using namespace std;
+
 
 static const int N = 20;
 
 int main(int argc, char *argv[])
 {
-    // Get the last position of '/'
-    std::string aux(argv[0]);
+    std::string path = getCurDirStr();
+    path += std::string("/in.txt");
 
-    // get '/' or '\\' depending on unix/mac or windows.
-#if defined(_WIN32) || defined(WIN32)
-    int pos = aux.rfind('\\');
-#else
-    int pos = aux.rfind('/');
-#endif
+    //__masF mas(20,10);
+    //mas.set_random_data(0, 10);
+    //mas.LOG_mas();
+    //new_line;
 
-    // Get the path and the name
-    std::string path = aux.substr(0,pos+1);
-    std::string name = aux.substr(pos+1);
-    // show results
-
-    path += std::string("in.txt");
-
-    ifstream in(path);
+    std::ifstream in(path);
+    path.clear();
     cin.rdbuf(in.rdbuf());
 
     int j, i, q, p, id[N], sz[N];
@@ -38,81 +32,22 @@ int main(int argc, char *argv[])
 
     __masI::LOG_mas(id,N,1);
     new_line;
-    new_line;
 
-    for (i = 0; i < N; ++i)
-        sz[i] = 1;
 
 
     while(cin >> p >> q)
     {
-#       if 0
+        for(;id[p] != p;)
+            p = id[id[p]];
 
-        int t = id[p];
-        if(id[q] == t) continue;
+        for(;id[q] != q;)
+            q = id[id[q]];
 
-        for (i = 0; i < N; ++i)
-            if(id[i] == t)
-                id[i] = id[q];
-
-        __masI::LOG_mas(id,N,1);
-        continue;
-#       endif
-
-#       if 0
-
-        int tm0 = p;
-        for (; p != id[p];)
-        {
-            p = id[p];
-        }
-
-
-        int tm1 = q;
-        for (; q != id[q]; )
-        {
-            q = id[q];
-        }
-
-
-        if(p == q) continue;
+        if(!(p-q))
+            continue;
 
         id[p] = q;
 
         __masI::LOG_mas(id,N,1);
-        continue;
-#       endif
-
-#       if 1
-
-        for (; p != id[p];)
-        {
-            p = id[id[p]];
-        }
-
-        for (; q != id[q]; )
-        {
-            q = id[id[q]];
-        }
-
-
-        if(p == q) continue;
-
-        if (sz[p] <= sz[q])
-        {
-            id[p] = q;
-            sz[q] += sz[p];
-        }
-        else
-        {
-            id[q] = p;
-            sz[p] += sz[q];
-        }
-
-        __masI::LOG_mas(id,N,1);
-        continue;
-#       endif
-
-
     }
 }
