@@ -11,6 +11,58 @@
 #define LOGO(...) std::cout << __VA_ARGS__ << std::endl;
 
 
+/*
+
+#   if 0//defined(__ARM_NEON32__)
+
+         int res = 0;
+         const uint toNextLine = w - WIDTH;
+         for (const uchar* endPatch = patch + WIDTH * HEIGHT; patch !=
+endPatch; img += toNextLine)
+
+             __asm__ __volatile__
+                 (
+                     "vld1.32    {q0,q1}, [%[src0]]!    \r\n"
+                     "vld1.32    {q2,q3}, [%[src1]]!    \r\n"
+
+                     "VABd.u8    d0 , d0 , d2        \r\n"
+                     "Vmovl.u8   q0 , d0             \r\n"
+                     "vmul.u16   q0 , q0 , q0        \r\n"
+                     "vaddl.u16  q0 , d0 , d1        \r\n"
+                     "vpadd.u32  d0 , d0 , d1        \r\n"
+                     "vdup.32    d2 , %[res]         \r\n"
+                     "vpadd.u32  d0 , d0 , d0        \r\n"
+                     "vadd.u32   d0 , d0 , d2        \r\n"
+
+                     "vmov.32    %[res], d0[0]       \r\n"
+                     :
+                     [src0]      "+r"    (patch ),
+                     [src1]      "+r"    (img   ),
+                     [res]       "+r"    (res   )
+                     ::
+                     "memory", "cc"
+                     );
+
+         return res;
+
+
+#   else
+
+     int res = 0;
+     const uchar* p1 = mData;
+     const uchar* p2 = patch2.mData;
+     for (int i = kWidth * kHeight; i; --i)
+     {
+         const int diff = *p1++ - (int) *p2++;
+         res += diff * diff;
+     }
+     return res;
+
+#   endif
+
+*/
+
+
 /// ###########################################################
 /// ##################### [binary search] #####################
 /// ###########################################################
@@ -405,12 +457,13 @@ int main(int argc, char *argv[])
 //    }
 //}
 
-
+/*
 ////std::vector<std::vector<int>>
 ////
 
 const static int N = 20;
 static int _next[N];
+//static int _prev[N];
 static int _data[N];
 int _front;
 int _tail;
@@ -497,6 +550,93 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+*/
+
+int N;
+int** a;
+template <class T>
+void __setData(T*& mas, int N, T value = 0)
+{
+    mas = new T [N];
+    for (int j = 0; j < N; ++j)
+        mas[j] = value;
+
+    class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, N, 1);
+}
+
+void bfs(int St)
+{
+    bool* visited;
+    bool* checked;
+    N += 1;
+    __setData(checked, N);
+    __setData(visited, N);
+
+    queue<int> Edges;
+
+    Edges.push(St);
+    checked[St] = 1;
 
 
 
+    while(Edges.size())
+    {
+        St = Edges.front();
+        visited[St] = 1;
+        Edges.pop();
+
+        std::stringstream os_;
+        os_.str("");
+        os_.clear();
+        os_ << std::right;
+
+        for (int j = 0; j < N; ++j)
+        {
+            if ( a[St][j] && (!checked[j] && !visited[j]) )
+            {
+                Edges.push(j);
+                checked[j] = 1;
+                os_ << j << " ";
+            }
+        }
+        LOGN(os_.str());
+    }
+
+    delete [] visited;
+    delete [] checked;
+}
+
+
+int main(int argc, char *argv[])
+{
+    std::string path = getCurDirStr();
+    path += std::string("/in.txt");
+
+    std::ifstream in(path);
+    path.clear();
+    cin.rdbuf(in.rdbuf());
+
+    cin >> N;
+
+    a = new int* [N + 1];
+    a[0] = new int [(N + 1)*(N + 1)];
+    for (int i = 1; i < N + 1; ++i)
+    {
+        a[i] = a[0] + i*(N + 1);
+        for (int j = 0; j < N + 1; ++j)
+            a[i][j] = 0;
+    }
+
+
+    int p, q;
+    while(cin >> p >> q)
+    {
+        a[p][q] = 1;
+        a[q][p] = 1;
+    }
+
+    __masI::LOG_mas(&a[0][0], N + 1, N + 1);
+    new_line;
+
+    bfs(1);
+}
