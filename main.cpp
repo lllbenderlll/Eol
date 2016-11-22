@@ -566,24 +566,21 @@ void __setData(T*& mas, int N, T value = 0)
 
 void bfs(int St)
 {
-    bool* visited;
-    bool* checked;
+    bool* used;
+
     N += 1;
-    __setData(checked, N);
-    __setData(visited, N);
+    __setData(used, N);
 
-    queue<int> Edges;
+    deque<int> Edges;
 
-    Edges.push(St);
-    checked[St] = 1;
-
+    Edges.push_back(St);
+    used[St] = 1;
 
 
     while(Edges.size())
     {
         St = Edges.front();
-        visited[St] = 1;
-        Edges.pop();
+        Edges.pop_front();
 
         std::stringstream os_;
         os_.str("");
@@ -592,18 +589,17 @@ void bfs(int St)
 
         for (int j = 0; j < N; ++j)
         {
-            if ( a[St][j] && (!checked[j] && !visited[j]) )
+            if ( a[St][j] && !used[j] )
             {
-                Edges.push(j);
-                checked[j] = 1;
+                Edges.push_back(j);
+                used[j] = 1;
                 os_ << j << " ";
             }
         }
         LOGN(os_.str());
     }
 
-    delete [] visited;
-    delete [] checked;
+    delete [] used;
 }
 
 
