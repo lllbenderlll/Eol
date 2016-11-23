@@ -340,7 +340,117 @@ private:
     Node<T>* tail = 0;
     Node<T>* head = 0;
 };
+*/
 
+
+
+/*
+template <class T>
+class node
+{
+public:
+    node(T el, node<T>* _prev = 0, node<T>* _next = 0):element(el), prev(_prev), next(_next){}
+    node<T>* prev;
+    node<T>* next;
+    T element;
+
+};
+
+template <class T>
+class Deque
+{
+public:
+    void push_back(T el)
+    {
+        if(sizeOfD == 0)
+        {
+           tail = new node<T>(el);
+           head = tail;
+           ++sizeOfD;
+           return;
+        }
+        tail->next = new node<T>(el,tail);
+        tail = tail->next;
+        ++sizeOfD;
+    }
+
+    void push_front(T el)
+    {
+        if(sizeOfD == 0)
+        {
+           tail = new node<T>(el);
+           head = tail;
+           ++sizeOfD;
+           return;
+        }
+        head->prev = new node<T>(el, 0, head);
+        head = head->prev;
+        ++sizeOfD;
+    }
+
+    T pop_front()
+    {
+        T el;
+        node<T>* tmp = head;
+        if(tmp)
+        {
+            el = tmp->element;
+            head = head->next;
+            delete tmp;
+            --sizeOfD;
+        }
+        return el;
+    }
+
+    T pop_back()
+    {
+        T el;
+        node<T>* tmp = tail;
+        if(tmp)
+        {
+            el = tmp->element;
+            tail = tail->prev;
+            delete tmp;
+            --sizeOfD;
+        }
+        return el;
+    }
+
+    T front()
+    {
+//        if (sizeOfD)
+//        {
+            return head->element;
+//        }
+    }
+
+    T back()
+    {
+//        if (sizeOfD)
+//        {
+            return tail->element;
+//        }
+    }
+
+    int size()
+    {
+        return sizeOfD;
+    }
+
+    void clear()
+    {
+        for (int i = 0; i < sizeOfD; ++i)
+            pop_back();
+
+        sizeOfD = 0;
+        tail = head = 0;
+    }
+
+private:
+    int sizeOfD = 0;
+    node<T>* tail = 0;
+    node<T>* head = 0;
+};
 
 
 
@@ -366,9 +476,9 @@ int main(int argc, char *argv[])
     cin.rdbuf(in.rdbuf());
 
     Deque<int> myDeq;
-    Deque<Deque<int>> my;
-    my.push_back(myDeq);
-    my.pop_back();
+//    Deque<Deque<int>> my;
+//    my.push_back(myDeq);
+//    my.pop_back();
 
     while(1)
     {
@@ -576,7 +686,8 @@ void bfs(int St)
     Edges.push_back(St);
     used[St] = 1;
 
-
+#   if 1
+    //BFS:
     while(Edges.size())
     {
         St = Edges.front();
@@ -599,9 +710,57 @@ void bfs(int St)
         LOGN(os_.str());
     }
 
+#   else
+
+    while(Edges.size())
+    {
+        St = Edges.back();
+        Edges.pop_back();
+
+        std::stringstream os_;
+        os_.str("");
+        os_.clear();
+        os_ << std::right;
+
+        for (int j = 0; j < N; ++j)
+        {
+            if ( a[St][j] && !used[j] )
+            {
+                Edges.push_back(j);
+                used[j] = 1;
+                os_ << j << " ";
+            }
+        }
+        LOGN(os_.str());
+    }
+
+#   endif
+
     delete [] used;
 }
 
+
+
+
+bool* usedDFS;
+std::vector<int> EdgesDFS;
+
+void dfs(int St)
+{
+    usedDFS[St] = true;
+
+    for (int j = 0; j < N; ++j)
+    {
+        if ( a[St][j] && !usedDFS[j] )
+        {
+            EdgesDFS.push_back(j);
+            //os_ << j << " ";
+            dfs(j);
+        }
+    }
+    LOGO(EdgesDFS.back());
+    EdgesDFS.pop_back();
+}
 
 int main(int argc, char *argv[])
 {
@@ -634,5 +793,13 @@ int main(int argc, char *argv[])
     __masI::LOG_mas(&a[0][0], N + 1, N + 1);
     new_line;
 
+#if 0
     bfs(1);
+#else
+    __setData(usedDFS, N);
+    EdgesDFS.push_back(1);
+    dfs(EdgesDFS.back());
+#endif
 }
+
+
