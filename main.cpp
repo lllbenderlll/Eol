@@ -1,14 +1,14 @@
 #include <iostream>
 #include <fstream>
+#define LOGO(...) std::cout << __VA_ARGS__ << std::endl
+
 #include <pwd.h>
 #include <unistd.h>
-
 #include <Vector_picture_static.h>
-
 #include <queue>
 
 
-#define LOGO(...) std::cout << __VA_ARGS__ << std::endl;
+
 
 
 /*
@@ -343,8 +343,8 @@ private:
 */
 
 
-
 /*
+
 template <class T>
 class node
 {
@@ -451,7 +451,7 @@ private:
     node<T>* tail = 0;
     node<T>* head = 0;
 };
-
+*/
 
 
 //int main(int argc, char *argv[])
@@ -466,6 +466,186 @@ private:
 //}
 
 
+
+template <class T, int N = 99>
+class stack
+{
+public:
+    stack()
+    {
+        assigne();
+    }
+
+    void push(T& el)
+    {
+        if (pointer == len)
+            assigne();
+
+        mas[pointer] = el;
+        ++pointer;
+    }
+
+    T pop()
+    {
+        if(size())
+        {
+            --pointer;
+            return mas[pointer + 1];
+        }
+        else
+            LOGO("stackisEmpty");
+    }
+
+    T head()
+    {
+        if(size())
+            return mas[1];
+        else
+            LOGO("stackisEmpty");
+    }
+
+
+    T tail()
+    {
+        if(size())
+            return mas[pointer - 1];
+        else
+            LOGO("stackisEmpty");
+    }
+
+    T& operator [](int i)
+    {
+        if ((i - 1 < size()) && size())
+            return mas[i + 1];
+        else
+            LOGO("stackisEmpty");
+    }
+
+    int size()
+    {
+        return pointer - 1;
+    }
+
+    void logStack()
+    {
+        class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas + 1, size(), 1);
+    }
+
+    void clear()
+    {
+        int pointer = 1;
+    }
+
+private:
+    void assigne()
+    {
+        int newLen = int(len * 2.5);
+        T* tmp = new T [newLen];
+
+        if(mas != NULL)
+        {
+            for (int i = 0; i < len; ++i)
+                tmp[i] = mas[i];
+
+            delete [] mas;
+            mas = tmp;
+        }
+
+        mas = tmp;
+        len = newLen;
+    }
+
+    T* mas = NULL;
+    int len = N;
+    int pointer = 1;
+};
+
+template <class T, int N = 10>
+class Deque
+{
+public:
+    void push_back(T el)
+    {
+        __head.push(el);
+    }
+
+    void push_front(T el)
+    {
+        __tail.push(el);
+    }
+
+    T pop_front()
+    {
+        if (__tail.size())
+            return __tail.pop();
+
+        while(__head.size())
+        {
+            T el = __head.pop();
+            __tail.push(el);
+        }
+        return __tail.pop();
+    }
+
+    T pop_back()
+    {
+        if (__head.size())
+            return __head.pop();
+
+        while(__tail.size())
+        {
+            T el = __tail.pop();
+            __head.push(el);
+        }
+
+        return __head.pop();
+    }
+
+    T front()
+    {
+        if (__head.size())
+            return __head.tail();
+
+        while(__tail.size())
+        {
+            T el = __tail.pop();
+            __head.push(el);
+        }
+
+        return __head.tail();
+    }
+
+    T back()
+    {
+        if (__tail.size())
+            return __tail.tail();
+
+        while(__head.size())
+        {
+            T el = __head.pop();
+            __tail.push(el);
+        }
+
+        return __tail.tail();
+    }
+
+    int size()
+    {
+        return (__tail.size() + __head.size());
+    }
+
+    void clear()
+    {
+        __tail.clear();
+        __head.clear();
+    }
+
+private:
+    stack<T> __tail;
+    stack<T> __head;
+};
+
+/*
 int main(int argc, char *argv[])
 {
     std::string path = getCurDirStr();
@@ -475,6 +655,150 @@ int main(int argc, char *argv[])
     path.clear();
     cin.rdbuf(in.rdbuf());
 
+    stack<int> st;
+
+
+    st.logStack();
+    for (int i = 5; i < 17; ++i)
+    {
+        st.push(i);
+        st.logStack();
+        LOGO(st.size());
+    }
+
+
+    new_line__;
+
+    LOGO(st.head());
+    LOGO(st[0]);
+
+    for (int i = 5; i < 17; ++i)
+        st.pop();
+
+    LOGO(st.head());
+    LOGO(st[0]);
+
+    st.logStack();
+
+
+    return 0;
+}
+*/
+
+
+//template <class T, int N = 10>
+//class Deque
+//{
+//public:
+//    void push_back(T el)
+//    {
+//        if (__size)
+//            __inc(__tail);
+
+//        __mas[__tail] = el;
+//        ++__size;
+//    }
+
+
+//    void push_front(T el)
+//    {
+//        if (__size)
+//            __dec(__head);
+
+//        __mas[__head] = el;
+//        ++__size;
+//    }
+
+//    T pop_front()
+//    {
+//        --__size;
+//        T& el = __mas[__head];
+//        __inc(__head);
+//        return el;
+//    }
+
+//    T pop_back()
+//    {
+//        --__size;
+//        T& el = __mas[__tail];
+//        __dec(__tail);
+//        return el;
+//    }
+
+//    T front()
+//    {
+//        return __mas[__head];
+//    }
+
+//    T back()
+//    {
+//        return __mas[__tail];
+//    }
+
+//    int size()
+//    {
+//        return __size;
+//    }
+
+//    void clear()
+//    {
+//        __tail = 0;
+//        __head = 0;
+//        __size = 0;
+//    }
+
+//private:
+//    T __mas[N];
+//    int __head = 0;
+//    int __tail = 0;
+//    int __size = 0;
+
+//    void __inc(int& el)
+//    {
+//        ++el;
+//        el = (N - el) ? el : 0;
+//    }
+
+//    void __dec(int& el)
+//    {
+//        --el;
+//        el = (el + 1) ? el : N + el;
+//    }
+
+//};
+
+int main(int argc, char *argv[])
+{
+    // push_back 3
+    // push_front 14
+    // size
+    // clear
+    // push_front 1
+    // back
+    // push_back 2
+    // front
+    // pop_back
+    // size
+    // pop_front
+    // size
+    // exit
+
+//    while(1)
+//    {
+//        int z;
+//        cin >> z;
+//        cout << z%10 << endl;
+//    }
+
+    std::string path = getCurDirStr();
+    path += std::string("/in.txt");
+
+    std::ifstream in(path);
+    path.clear();
+    cin.rdbuf(in.rdbuf());
+
+
+    stack<int> st;
     Deque<int> myDeq;
 //    Deque<Deque<int>> my;
 //    my.push_back(myDeq);
@@ -541,7 +865,7 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
-*/
+
 
 //const int n = 15;
 //std::queue <int> turn;          //Это наша очередь, хранящая номера вершин
@@ -662,6 +986,9 @@ int main(int argc, char *argv[])
 }
 */
 
+
+/*
+//DFS & BFS
 int N;
 int** a;
 template <class T>
@@ -747,19 +1074,31 @@ std::vector<int> EdgesDFS;
 
 void dfs(int St)
 {
+    static int size0 = 1;
+    static int size1 = 1;
     usedDFS[St] = true;
 
-    for (int j = 0; j < N; ++j)
+    for (int j = 0; j <= N; ++j)
     {
         if ( a[St][j] && !usedDFS[j] )
         {
             EdgesDFS.push_back(j);
+            size0++;
+            //size += EdgesDFS.size();
             //os_ << j << " ";
             dfs(j);
         }
     }
-    LOGO(EdgesDFS.back());
+
+    if (size0 > size1)
+    {
+        size1 = size0;
+        int* ptr = &EdgesDFS[0];
+        __LOG_MAS_simpley(ptr, EdgesDFS.size());
+    }
     EdgesDFS.pop_back();
+    size0 = EdgesDFS.size();
+    size1 = size0;
 }
 
 int main(int argc, char *argv[])
@@ -793,7 +1132,7 @@ int main(int argc, char *argv[])
     __masI::LOG_mas(&a[0][0], N + 1, N + 1);
     new_line;
 
-#if 0
+#if d
     bfs(1);
 #else
     __setData(usedDFS, N);
@@ -801,5 +1140,36 @@ int main(int argc, char *argv[])
     dfs(EdgesDFS.back());
 #endif
 }
+*/
 
+/*
+const int n = 7;
+int used[n];
 
+void go(int index)
+{
+    if (index == n)
+    {
+        __LOG_MAS_simpley(used, n);
+    }
+    else
+    {
+        used[index] = 0;
+        go(index + 1);
+
+        used[index] = 1;
+        go(index + 1);
+
+        used[index] = 2;
+        go(index + 1);
+
+        used[index] = 3;
+        go(index + 1);
+    }
+}
+
+int main(int argc, char *argv[])
+{
+    go(0);
+}
+*/
