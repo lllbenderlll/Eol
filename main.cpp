@@ -467,6 +467,7 @@ private:
 
 
 
+
 template <class T, int N = 20>
 class stack//https://www.e-olymp.com/ru/problems/6124
 {
