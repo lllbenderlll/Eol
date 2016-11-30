@@ -475,14 +475,20 @@ public:
     {
         assigne();
     }
+    ~stack()
+    {
+        delete [] mas;
+        clear();
+    }
 
     void push(T& el)
     {
-        if (pointer == len)
+        if (size() == topLenOfStack)
             assigne();
 
-        mas[pointer] = el;
         ++pointer;
+        mas[pointer] = el;
+        logStack();
     }
 
     T pop()
@@ -490,27 +496,28 @@ public:
         if(size())
         {
             --pointer;
+            logStack();
             return mas[pointer + 1];
         }
         else
-            LOGO("stackisEmpty");
+            LOGO("error");
     }
 
     T head()
     {
         if(size())
-            return mas[1];
+            return *mas;
         else
-            LOGO("stackisEmpty");
+            LOGO("error");
     }
 
 
     T tail()
     {
-        if(size())
-            return mas[pointer - 1];
+        if(size() > 0)
+            return mas[pointer];
         else
-            LOGO("stackisEmpty");
+            LOGO("error");
     }
 
     T back()
@@ -525,36 +532,37 @@ public:
 
     T& operator [](int i)
     {
-        if ((i - 1 < size()) && size())
-            return mas[i + 1];
+        if ((i < size()) && size() && (i >= 0))
+            return mas[i];
         else
-            LOGO("stackisEmpty");
+            LOGO("error");
     }
 
     int size()
     {
-        return pointer - 1;
+        return pointer + 1;
     }
 
     void logStack()
     {
-        class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas + 1, size(), 1);
+        //class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, size(), 1);
     }
 
     void clear()
     {
-        int pointer = 1;
+        pointer = -1;
+        logStack();
     }
 
 private:
     void assigne()
     {
-        int newLen = int(len * 2.5);
+        int newLen = int(topLenOfStack * 2.5);
         T* tmp = new T [newLen];
 
         if(mas != NULL)
         {
-            for (int i = 0; i < len; ++i)
+            for (int i = 0; i < topLenOfStack; ++i)
                 tmp[i] = mas[i];
 
             delete [] mas;
@@ -562,23 +570,18 @@ private:
         }
 
         mas = tmp;
-        len = newLen;
+        topLenOfStack = newLen;
     }
 
     T* mas = NULL;
-    int len = N;
+    int topLenOfStack = N;
     int pointer = -1;
 };
 
 
 int main(int argc, char *argv[])
 {
-    std::string path = getCurDirStr();
-    path += std::string("/in.txt");
-
-    std::ifstream in(path);
-    path.clear();
-    cin.rdbuf(in.rdbuf());
+    freopen("in.txt", "r", stdin);
 
     stack<int> myDeq;
 
