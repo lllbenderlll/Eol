@@ -13,3 +13,5 @@ SOURCES += main.cpp \
 
 DISTFILES += \
     in.txt
+
+DEFINES += _EollloE_

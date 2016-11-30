@@ -2,13 +2,201 @@
 #include <fstream>
 #define LOGO(...) std::cout << __VA_ARGS__ << std::endl
 
-#include <pwd.h>
-#include <unistd.h>
-#include <Vector_picture_static.h>
-#include <queue>
+#ifdef _EollloE_
+#   include <pwd.h>
+#   include <unistd.h>
+#   include <Vector_picture_static.h>
+#   include <queue>
+#endif
+
+template <class T, int N = 20>
+class stack//https://www.e-olymp.com/ru/problems/6124
+{
+public:
+    stack()
+    {
+        assigne();
+    }
+    ~stack()
+    {
+        delete [] mas;
+        clear();
+        mas = NULL;
+        topLenOfStack = N;
+        pointer = -1;
+    }
+
+    void push(T& el)
+    {
+        if (size() >= (topLenOfStack - 10))
+            assigne();
+
+        ++pointer;
+        mas[pointer] = el;
+    }
+
+    T pop()
+    {
+        if (size())
+        {
+            T el = mas[pointer];
+            --pointer;
+            return el;
+        }
+
+        LOGO("error");
+    }
+
+    T tail()
+    {
+        if(size())
+            return mas[pointer];
+
+        LOGO("error");
+    }
+
+    T back()
+    {
+        return tail();
+    }
+
+    int size()
+    {
+        return (1 + pointer);
+    }
+
+    //T head()
+    //{
+    //    if(size() > 0)
+    //        return *mas;
+    //    else
+    //        LOGO("error");
+    //}
+    //T front()
+    //{
+    //    return head();
+    //}
+
+    T& operator [](int i)
+    {
+        if ((i < size()) && size() && (i >= 0))
+            return mas[i];
+        else
+            LOGO("error");
+    }
 
 
 
+    void logStack()
+    {
+#       ifdef _EollloE_
+        class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, size(), 1);
+#       endif
+    }
+
+    void clear()
+    {
+        pointer = -1;
+    }
+
+private:
+    void assigne()
+    {
+        int newLen = int(topLenOfStack * 2.5);
+        T* tmp = new T [newLen];
+
+        if(mas != NULL)
+        {
+            for (int i = 0; i <= pointer; i++)
+                tmp[i] = mas[i];
+
+            delete [] mas;
+        }
+
+        mas = tmp;
+        topLenOfStack = newLen;
+    }
+
+    T* mas = NULL;
+    int topLenOfStack = N;
+    int pointer = -1;
+};
+
+
+int main(int argc, char *argv[])
+{
+#   ifdef _EollloE_
+    freopen("in.txt", "r", stdin);
+#   endif
+
+    stack<int> myDeq;
+
+    while(1)
+    {
+        std::string comand;
+        std::cin >> comand;
+        int value;
+
+        if (!comand.compare("push"))
+        {
+            std::cin >> value;
+            myDeq.push(value);
+            myDeq.logStack();
+            LOGO("ok");
+            continue;
+        }
+
+        if(!comand.compare("pop"))
+        {
+            if (myDeq.size())
+                LOGO(myDeq.pop());
+            else
+                LOGO("error");
+
+            myDeq.logStack();
+            continue;
+        }
+
+        //if(!comand.compare("front"))
+        //{
+        //    LOGO(myDeq.front());
+        //    myDeq.logStack();
+        //    continue;
+        //}
+
+        if(!comand.compare("back"))
+        {
+            if (myDeq.size())
+                LOGO(myDeq.back());
+            else
+                LOGO("error");
+
+            myDeq.logStack();
+            continue;
+        }
+
+        if(!comand.compare("size"))
+        {
+            LOGO(myDeq.size());
+            myDeq.logStack();
+            continue;
+        }
+        if(!comand.compare("clear"))
+        {
+            myDeq.clear();
+            myDeq.logStack();
+            LOGO("ok");
+            continue;
+        }
+        if(!comand.compare("exit"))
+        {
+            LOGO("bye");
+            myDeq.logStack();
+            break;
+        }
+    }
+    return 0;
+}
 
 
 /*
@@ -466,180 +654,7 @@ private:
 //}
 
 
-//git remote add origin https://github.com/lllbenderlll/Eol.git
-template <class T, int N = 20>
-class stack//https://www.e-olymp.com/ru/problems/6124
-{
-public:
-    stack()
-    {
-        assigne();
-    }
-    ~stack()
-    {
-        delete [] mas;
-        clear();
-    }
-
-    void push(T& el)
-    {
-        if (size() == topLenOfStack)
-            assigne();
-
-        ++pointer;
-        mas[pointer] = el;
-        logStack();
-    }
-
-    T pop()
-    {
-        if(size())
-        {
-            --pointer;
-            logStack();
-            return mas[pointer + 1];
-        }
-        else
-            LOGO("error");
-    }
-
-    T head()
-    {
-        if(size())
-            return *mas;
-        else
-            LOGO("error");
-    }
-
-
-    T tail()
-    {
-        if(size() > 0)
-            return mas[pointer];
-        else
-            LOGO("error");
-    }
-
-    T back()
-    {
-        return tail();
-    }
-
-    T front()
-    {
-        return head();
-    }
-
-    T& operator [](int i)
-    {
-        if ((i < size()) && size() && (i >= 0))
-            return mas[i];
-        else
-            LOGO("error");
-    }
-
-    int size()
-    {
-        return pointer + 1;
-    }
-
-    void logStack()
-    {
-        //class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, size(), 1);
-    }
-
-    void clear()
-    {
-        pointer = -1;
-        logStack();
-    }
-
-private:
-    void assigne()
-    {
-        int newLen = int(topLenOfStack * 2.5);
-        T* tmp = new T [newLen];
-
-        if(mas != NULL)
-        {
-            for (int i = 0; i < topLenOfStack; ++i)
-                tmp[i] = mas[i];
-
-            delete [] mas;
-            mas = tmp;
-        }
-
-        mas = tmp;
-        topLenOfStack = newLen;
-    }
-
-    T* mas = NULL;
-    int topLenOfStack = N;
-    int pointer = -1;
-};
-
-
-int main(int argc, char *argv[])
-{
-    freopen("in.txt", "r", stdin);
-
-    stack<int> myDeq;
-
-    while(1)
-    {
-        std::string comand;
-        std::cin >> comand;
-        int value;
-
-        if (!comand.compare("push"))
-        {
-            std::cin >> value;
-            myDeq.push(value);
-            LOGO("ok");
-            continue;
-        }
-
-        if(!comand.compare("pop"))
-        {
-            LOGO(myDeq.pop());
-            continue;
-        }
-
-        if(!comand.compare("front"))
-        {
-            LOGO(myDeq.front());
-            continue;
-        }
-
-        if(!comand.compare("back"))
-        {
-            LOGO(myDeq.back());
-            continue;
-        }
-
-        if(!comand.compare("size"))
-        {
-            LOGO(myDeq.size());
-            continue;
-        }
-        if(!comand.compare("clear"))
-        {
-            myDeq.clear();
-            LOGO("ok");
-            continue;
-        }
-        if(!comand.compare("exit"))
-        {
-            LOGO("bye");
-            break;
-        }
-    }
-    return 0;
-}
-
-
-
-
+/*
 template <class T, int N = 10>
 class Deque//https://www.e-olymp.com/ru/problems/6128
 {
@@ -724,6 +739,7 @@ private:
     stack<T> __tail;
     stack<T> __head;
 };
+*/
 
 /*
 int main(int argc, char *argv[])
