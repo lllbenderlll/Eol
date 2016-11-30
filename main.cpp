@@ -9,127 +9,483 @@
 #   include <queue>
 #endif
 
-template <class T, int N = 20>
-class stack//https://www.e-olymp.com/ru/problems/6124
+//template <class T, int N = 20>
+//class stack//https://www.e-olymp.com/ru/problems/6124
+//{
+//public:
+//    stack()
+//    {
+//        assigne();
+//    }
+//    ~stack()
+//    {
+//        delete [] mas;
+//        clear();
+//        mas = NULL;
+//        topLenOfStack = N;
+//        pointer = -1;
+//    }
+
+//    void push(T& el)
+//    {
+//        if (size() >= (topLenOfStack - 10))
+//            assigne();
+
+//        ++pointer;
+//        mas[pointer] = el;
+//    }
+
+//    T pop()
+//    {
+//        if (size())
+//        {
+//            T el = mas[pointer];
+//            --pointer;
+//            return el;
+//        }
+
+//        LOGO("error");
+//    }
+
+//    T tail()
+//    {
+//        if(size())
+//            return mas[pointer];
+
+//        LOGO("error");
+//    }
+
+//    T back()
+//    {
+//        return tail();
+//    }
+
+//    int size()
+//    {
+//        return (1 + pointer);
+//    }
+
+
+////    void logStack()
+////    {
+////#       ifdef _EollloE_
+////        class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, size(), 1);
+////#       endif
+////    }
+
+//    void clear()
+//    {
+//        pointer = -1;
+//    }
+
+//private:
+//    void assigne()
+//    {
+//        int newLen = int(topLenOfStack * 2.5);
+//        T* tmp = new T [newLen];
+
+//        if(mas != NULL)
+//        {
+//            for (int i = 0; i <= pointer; i++)
+//                tmp[i] = mas[i];
+
+//            delete [] mas;
+//        }
+
+//        mas = tmp;
+//        topLenOfStack = newLen;
+//    }
+
+//    T* mas = NULL;
+//    int topLenOfStack = N;
+//    int pointer = -1;
+//};
+
+
+/// \template <class T, int N = 20>
+/// \class stack
+//int main(int argc, char *argv[])
+//{
+//#   ifdef _EollloE_
+//    freopen("in.txt", "r", stdin);
+//#   endif
+//
+//    stack<int> myDeq;
+//
+//    while(1)
+//    {
+//        std::string comand;
+//        std::cin >> comand;
+//        int value;
+//
+//        if (!comand.compare("push"))
+//        {
+//            std::cin >> value;
+//            myDeq.push(value);
+//            myDeq.logStack();
+//            LOGO("ok");
+//            continue;
+//        }
+//
+//        if(!comand.compare("pop"))
+//        {
+//            if (myDeq.size())
+//                LOGO(myDeq.pop());
+//            else
+//                LOGO("error");
+//
+//            myDeq.logStack();
+//            continue;
+//        }
+//
+//        //if(!comand.compare("front"))
+//        //{
+//        //    LOGO(myDeq.front());
+//        //    myDeq.logStack();
+//        //    continue;
+//        //}
+//
+//        if(!comand.compare("back"))
+//        {
+//            if (myDeq.size())
+//                LOGO(myDeq.back());
+//            else
+//                LOGO("error");
+//
+//            myDeq.logStack();
+//            continue;
+//        }
+//
+//        if(!comand.compare("size"))
+//        {
+//            LOGO(myDeq.size());
+//            myDeq.logStack();
+//            continue;
+//        }
+//        if(!comand.compare("clear"))
+//        {
+//            myDeq.clear();
+//            myDeq.logStack();
+//            LOGO("ok");
+//            continue;
+//        }
+//        if(!comand.compare("exit"))
+//        {
+//            LOGO("bye");
+//            myDeq.logStack();
+//            break;
+//        }
+//    }
+//    return 0;
+//}
+
+
+
+////https://www.e-olymp.com/ru/problems/6128
+//template <class T>//on NODE point (with next and prev componenta's): tail and head are NODE too;
+//class node
+//{
+//public:
+//    node(T el, node<T>* _prev = 0, node<T>* _next = 0):element(el), prev(_prev), next(_next){}
+//    node<T>* prev;
+//    node<T>* next;
+//    T element;
+//};
+
+//template <class T>
+//class Deque
+//{
+//public:
+//    void push_back(T el)
+//    {
+//        if(sizeOfD == 0)
+//        {
+//           tail = new node<T>(el);
+//           head = tail;
+//           ++sizeOfD;
+//           return;
+//        }
+//        tail->next = new node<T>(el,tail);
+//        tail = tail->next;
+//        ++sizeOfD;
+//    }
+
+//    void push_front(T el)
+//    {
+//        if(sizeOfD == 0)
+//        {
+//           tail = new node<T>(el);
+//           head = tail;
+//           ++sizeOfD;
+//           return;
+//        }
+//        head->prev = new node<T>(el, 0, head);
+//        head = head->prev;
+//        ++sizeOfD;
+//    }
+
+//    T pop_front()
+//    {
+//        T el;
+//        node<T>* tmp = head;
+//        if(tmp)
+//        {
+//            el = tmp->element;
+//            head = head->next;
+//            delete tmp;
+//            --sizeOfD;
+//        }
+//        return el;
+//    }
+
+//    T pop_back()
+//    {
+//        T el;
+//        node<T>* tmp = tail;
+//        if(tmp)
+//        {
+//            el = tmp->element;
+//            tail = tail->prev;
+//            delete tmp;
+//            --sizeOfD;
+//        }
+//        return el;
+//    }
+
+//    T front()
+//    {
+////        if (sizeOfD)
+////        {
+//            return head->element;
+////        }
+//    }
+
+//    T back()
+//    {
+////        if (sizeOfD)
+////        {
+//            return tail->element;
+////        }
+//    }
+
+//    int size()
+//    {
+//        return sizeOfD;
+//    }
+
+//    void clear()
+//    {
+//        for (int i = 0; i < sizeOfD; ++i)
+//            pop_back();
+
+//        sizeOfD = 0;
+//        tail = head = 0;
+//    }
+
+//private:
+//    int sizeOfD = 0;
+//    node<T>* tail = 0;
+//    node<T>* head = 0;
+//};
+
+
+//https://www.e-olymp.com/ru/problems/6128
+//template <class T> //on two stack<T>: tail and head
+//class Deque
+//{
+//public:
+//    void push_back(T el)
+//    {
+//        __tail.push(el);
+//    }
+
+//    void push_front(T el)
+//    {
+//        __head.push(el);
+//    }
+
+//    T pop_front()
+//    {
+//        if (__head.size())
+//            return __head.pop();
+
+//        while(__tail.size())
+//        {
+//            T el = __tail.pop();
+//            __head.push(el);
+//        }
+
+//        if (__head.size())
+//            return __head.pop();
+
+//        LOGO("error");
+//    }
+
+//    T pop_back()
+//    {
+//        if (__tail.size())
+//            return __tail.pop();
+
+//        while(__head.size())
+//        {
+//            T el = __head.pop();
+//            __tail.push(el);
+//        }
+
+//        if (__tail.size())
+//            return __tail.pop();
+
+//        LOGO("error");
+//    }
+
+//    T front()
+//    {
+//        if (__head.size())
+//            return __head.tail();
+
+//        while(__tail.size())
+//        {
+//            T el = __tail.pop();
+//            __head.push(el);
+//        }
+
+//        if (__head.size())
+//            return __head.tail();
+
+//        LOGO("error");
+//    }
+
+//    T back()
+//    {
+//        if (__tail.size())
+//            return __tail.tail();
+
+//        while(__head.size())
+//        {
+//            T el = __head.pop();
+//            __tail.push(el);
+//        }
+
+//        if (__tail.size())
+//            return __tail.tail();
+//        LOGO("error");
+//    }
+
+//    int size()
+//    {
+//        return (__tail.size() + __head.size());
+//    }
+
+//    void clear()
+//    {
+//        __tail.clear();
+//        __head.clear();
+//    }
+
+//private:
+//    stack<T> __tail;
+//    stack<T> __head;
+//};
+
+
+template <class T, int N = 10>
+class Deque
 {
 public:
-    stack()
+    void push_back(T el)
     {
-        assigne();
-    }
-    ~stack()
-    {
-        delete [] mas;
-        clear();
-        mas = NULL;
-        topLenOfStack = N;
-        pointer = -1;
+        if (__size)
+            __inc(__tail);
+
+        __mas[__tail] = el;
+        ++__size;
     }
 
-    void push(T& el)
+    void push_front(T el)
     {
-        if (size() >= (topLenOfStack - 10))
-            assigne();
+        if (__size)
+            __dec(__head);
 
-        ++pointer;
-        mas[pointer] = el;
+        __mas[__head] = el;
+        ++__size;
     }
 
-    T pop()
+    T pop_front()
     {
-        if (size())
+        if (__size)
         {
-            T el = mas[pointer];
-            --pointer;
+            --__size;
+            T& el = __mas[__head];
+            if (__size)
+                __inc(__head);
             return el;
         }
-
-        LOGO("error");
     }
 
-    T tail()
+    T pop_back()
     {
-        if(size())
-            return mas[pointer];
+        if (__size)
+        {
+            --__size;
+            T& el = __mas[__tail];
+            if (__size)
+                __dec(__tail);
+            return el;
+        }
+    }
 
-        LOGO("error");
+    T front()
+    {
+        return __mas[__head];
     }
 
     T back()
     {
-        return tail();
+        return __mas[__tail];
     }
 
     int size()
     {
-        return (1 + pointer);
-    }
-
-    //T head()
-    //{
-    //    if(size() > 0)
-    //        return *mas;
-    //    else
-    //        LOGO("error");
-    //}
-    //T front()
-    //{
-    //    return head();
-    //}
-
-    T& operator [](int i)
-    {
-        if ((i < size()) && size() && (i >= 0))
-            return mas[i];
-        else
-            LOGO("error");
-    }
-
-
-
-    void logStack()
-    {
-#       ifdef _EollloE_
-        class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, size(), 1);
-#       endif
+        return __size;
     }
 
     void clear()
     {
-        pointer = -1;
+        __tail = 0;
+        __head = 0;
+        __size = 0;
     }
 
 private:
-    void assigne()
+    T __mas[N];
+    int __head = 0;
+    int __tail = 0;
+    int __size = 0;
+
+    void __inc(int& el)
     {
-        int newLen = int(topLenOfStack * 2.5);
-        T* tmp = new T [newLen];
-
-        if(mas != NULL)
-        {
-            for (int i = 0; i <= pointer; i++)
-                tmp[i] = mas[i];
-
-            delete [] mas;
-        }
-
-        mas = tmp;
-        topLenOfStack = newLen;
+        ++el;
+        el = (el < N) ? el : 0;
     }
 
-    T* mas = NULL;
-    int topLenOfStack = N;
-    int pointer = -1;
-};
+    void __dec(int& el)
+    {
+        --el;
+        el = (el >= 0) ? el : N + el;
+    }
 
+};
 
 int main(int argc, char *argv[])
 {
+
 #   ifdef _EollloE_
     freopen("in.txt", "r", stdin);
-#   endif
+#   endif;
 
-    stack<int> myDeq;
+    Deque<int> myDeq;
+    //Deque<Deque<int>> my;
+    //my.push_back(myDeq);
 
     while(1)
     {
@@ -137,66 +493,77 @@ int main(int argc, char *argv[])
         std::cin >> comand;
         int value;
 
-        if (!comand.compare("push"))
+        if (!comand.compare("push_front"))
         {
             std::cin >> value;
-            myDeq.push(value);
-            myDeq.logStack();
+            myDeq.push_front(value);
             LOGO("ok");
             continue;
         }
 
-        if(!comand.compare("pop"))
+        if (!comand.compare("push_back"))
         {
-            if (myDeq.size())
-                LOGO(myDeq.pop());
-            else
-                LOGO("error");
-
-            myDeq.logStack();
+            std::cin >> value;
+            myDeq.push_back(value);
+            LOGO("ok");
             continue;
         }
 
-        //if(!comand.compare("front"))
-        //{
-        //    LOGO(myDeq.front());
-        //    myDeq.logStack();
-        //    continue;
-        //}
+        if(!comand.compare("pop_front"))
+        {
+            if(myDeq.size())
+                LOGO(myDeq.pop_front());
+            else
+                LOGO("error");
 
+            continue;
+        }
+        if(!comand.compare("pop_back"))
+        {
+            if(myDeq.size())
+                LOGO(myDeq.pop_back());
+            else
+                LOGO("error");
+
+            continue;
+        }
+        if(!comand.compare("front"))
+        {
+            if(myDeq.size())
+                LOGO(myDeq.front());
+            else
+                LOGO("error");
+            continue;
+        }
         if(!comand.compare("back"))
         {
-            if (myDeq.size())
-                LOGO(myDeq.back());
+            if(myDeq.size())
+            LOGO(myDeq.back());
             else
                 LOGO("error");
-
-            myDeq.logStack();
             continue;
         }
-
         if(!comand.compare("size"))
         {
             LOGO(myDeq.size());
-            myDeq.logStack();
             continue;
         }
         if(!comand.compare("clear"))
         {
             myDeq.clear();
-            myDeq.logStack();
             LOGO("ok");
             continue;
         }
         if(!comand.compare("exit"))
         {
             LOGO("bye");
-            myDeq.logStack();
             break;
         }
     }
     return 0;
 }
+
+
 
 
 /*
@@ -532,8 +899,8 @@ private:
 
 
 /*
-
-template <class T>
+//https://www.e-olymp.com/ru/problems/6128
+template <class T>//on NODE point (with next and prev componenta's): tail and head are NODE too;
 class node
 {
 public:
@@ -654,133 +1021,6 @@ private:
 //}
 
 
-/*
-template <class T, int N = 10>
-class Deque//https://www.e-olymp.com/ru/problems/6128
-{
-public:
-    void push_back(T el)
-    {
-        __head.push(el);
-    }
-
-    void push_front(T el)
-    {
-        __tail.push(el);
-    }
-
-    T pop_front()
-    {
-        if (__tail.size())
-            return __tail.pop();
-
-        while(__head.size())
-        {
-            T el = __head.pop();
-            __tail.push(el);
-        }
-        return __tail.pop();
-    }
-
-    T pop_back()
-    {
-        if (__head.size())
-            return __head.pop();
-
-        while(__tail.size())
-        {
-            T el = __tail.pop();
-            __head.push(el);
-        }
-
-        return __head.pop();
-    }
-
-    T front()
-    {
-        if (__head.size())
-            return __head.tail();
-
-        while(__tail.size())
-        {
-            T el = __tail.pop();
-            __head.push(el);
-        }
-
-        return __head.tail();
-    }
-
-    T back()
-    {
-        if (__tail.size())
-            return __tail.tail();
-
-        while(__head.size())
-        {
-            T el = __head.pop();
-            __tail.push(el);
-        }
-
-        return __tail.tail();
-    }
-
-    int size()
-    {
-        return (__tail.size() + __head.size());
-    }
-
-    void clear()
-    {
-        __tail.clear();
-        __head.clear();
-    }
-
-private:
-    stack<T> __tail;
-    stack<T> __head;
-};
-*/
-
-/*
-int main(int argc, char *argv[])
-{
-    std::string path = getCurDirStr();
-    path += std::string("/in.txt");
-
-    std::ifstream in(path);
-    path.clear();
-    cin.rdbuf(in.rdbuf());
-
-    stack<int> st;
-
-
-    st.logStack();
-    for (int i = 5; i < 17; ++i)
-    {
-        st.push(i);
-        st.logStack();
-        LOGO(st.size());
-    }
-
-
-    new_line__;
-
-    LOGO(st.head());
-    LOGO(st[0]);
-
-    for (int i = 5; i < 17; ++i)
-        st.pop();
-
-    LOGO(st.head());
-    LOGO(st[0]);
-
-    st.logStack();
-
-
-    return 0;
-}
-*/
-
 
 //template <class T, int N = 10>
 //class Deque
@@ -862,85 +1102,6 @@ int main(int argc, char *argv[])
 //    }
 
 //};
-
-//int main(int argc, char *argv[])
-//{
-
-//    std::string path = getCurDirStr();
-//    path += std::string("/in.txt");
-
-//    std::ifstream in(path);
-//    path.clear();
-//    cin.rdbuf(in.rdbuf());
-
-
-////    stack<int> myDeq;
-
-//    Deque<int> myDeq;
-//    //Deque<Deque<int>> my;
-//    //my.push_back(myDeq);
-
-//    while(1)
-//    {
-//        std::string comand;
-//        std::cin >> comand;
-//        int value;
-
-//        if (!comand.compare("push_front"))
-//        {
-//            std::cin >> value;
-//            myDeq.push_front(value);
-//            LOGO("ok");
-//            continue;
-//        }
-
-//        if (!comand.compare("push_back"))
-//        {
-//            std::cin >> value;
-//            myDeq.push_back(value);
-//            LOGO("ok");
-//            continue;
-//        }
-
-//        if(!comand.compare("pop_front"))
-//        {
-//            LOGO(myDeq.pop_front());
-//            continue;
-//        }
-//        if(!comand.compare("pop_back"))
-//        {
-//            LOGO(myDeq.pop_back());
-//            continue;
-//        }
-//        if(!comand.compare("front"))
-//        {
-//            LOGO(myDeq.front());
-//            continue;
-//        }
-//        if(!comand.compare("back"))
-//        {
-//            LOGO(myDeq.back());
-//            continue;
-//        }
-//        if(!comand.compare("size"))
-//        {
-//            LOGO(myDeq.size());
-//            continue;
-//        }
-//        if(!comand.compare("clear"))
-//        {
-//            myDeq.clear();
-//            LOGO("ok");
-//            continue;
-//        }
-//        if(!comand.compare("exit"))
-//        {
-//            LOGO("bye");
-//            break;
-//        }
-//    }
-//    return 0;
-//}
 
 
 //const int n = 15;
