@@ -467,6 +467,7 @@ private:
 
 
 
+//git remote add origin https://github.com/lllbenderlll/Eol.git
 template <class T, int N = 20>
 class stack//https://www.e-olymp.com/ru/problems/6124
 {
