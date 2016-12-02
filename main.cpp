@@ -9,10 +9,10 @@
 #   include <queue>
 #endif
 
-//template <class T, int N = 20>
-//class stack//https://www.e-olymp.com/ru/problems/6124
-//{
-//public:
+// template <class T, int N = 20>
+// class stack//https://www.e-olymp.com/ru/problems/6124
+// {
+// public:
 //    stack()
 //    {
 //        assigne();
@@ -66,19 +66,19 @@
 //    }
 
 
-////    void logStack()
-////    {
-////#       ifdef _EollloE_
-////        class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, size(), 1);
-////#       endif
-////    }
+// //    void logStack()
+// //    {
+// //#       ifdef _EollloE_
+// //        class_Vector_picture_static::Vector_picture_static<T>::LOG_mas(mas, size(), 1);
+// //#       endif
+// //    }
 
 //    void clear()
 //    {
 //        pointer = -1;
 //    }
 
-//private:
+// private:
 //    void assigne()
 //    {
 //        int newLen = int(topLenOfStack * 2.5);
@@ -99,85 +99,77 @@
 //    T* mas = NULL;
 //    int topLenOfStack = N;
 //    int pointer = -1;
-//};
+// };
 
 
-/// \template <class T, int N = 20>
-/// \class stack
-//int main(int argc, char *argv[])
-//{
-//#   ifdef _EollloE_
-//    freopen("in.txt", "r", stdin);
-//#   endif
-//
-//    stack<int> myDeq;
-//
-//    while(1)
-//    {
-//        std::string comand;
-//        std::cin >> comand;
-//        int value;
-//
-//        if (!comand.compare("push"))
-//        {
-//            std::cin >> value;
-//            myDeq.push(value);
-//            myDeq.logStack();
-//            LOGO("ok");
-//            continue;
-//        }
-//
-//        if(!comand.compare("pop"))
-//        {
-//            if (myDeq.size())
-//                LOGO(myDeq.pop());
-//            else
-//                LOGO("error");
-//
-//            myDeq.logStack();
-//            continue;
-//        }
-//
-//        //if(!comand.compare("front"))
-//        //{
-//        //    LOGO(myDeq.front());
-//        //    myDeq.logStack();
-//        //    continue;
-//        //}
-//
-//        if(!comand.compare("back"))
-//        {
-//            if (myDeq.size())
-//                LOGO(myDeq.back());
-//            else
-//                LOGO("error");
-//
-//            myDeq.logStack();
-//            continue;
-//        }
-//
-//        if(!comand.compare("size"))
-//        {
-//            LOGO(myDeq.size());
-//            myDeq.logStack();
-//            continue;
-//        }
-//        if(!comand.compare("clear"))
-//        {
-//            myDeq.clear();
-//            myDeq.logStack();
-//            LOGO("ok");
-//            continue;
-//        }
-//        if(!comand.compare("exit"))
-//        {
-//            LOGO("bye");
-//            myDeq.logStack();
-//            break;
-//        }
-//    }
-//    return 0;
-//}
+// // \template <class T, int N = 20>
+// // \class stack
+
+
+// int main(int argc, char *argv[])
+// {
+// #   ifdef _EollloE_
+//     freopen("in.txt", "r", stdin);
+// #   endif
+
+//     stack<int> myDeq;
+//     char comand[10];
+//     while (scanf("%s", comand) == 1)
+//     {
+//         int value;
+//         if (!strcmp(comand,"push"))
+//         {
+//             scanf("%d", &value);
+//             myDeq.push(value);
+//             printf("ok\n");
+//             continue;
+//         }
+
+//         if(!strcmp(comand,"pop"))
+//         {
+//             if (myDeq.size())
+//                 printf("%d\n", myDeq.pop());
+//             else
+//                 printf("error\n");
+
+//             continue;
+//         }
+
+//         if(!strcmp(comand,"back"))
+//         {
+//             if (myDeq.size())
+//                 printf("%d\n", back());
+//             else
+//                 printf("error\n");
+
+//             continue;
+//         }
+
+//         if(!strcmp(comand,"size"))
+//         {
+//             printf("%d\n", size());
+
+//             continue;
+//         }
+//         if(!strcmp(comand,"clear"))
+//         {
+//             myDeq.clear();
+//             printf("ok\n");
+//             continue;
+//         }
+//         if(!strcmp(comand,"exit"))
+//         {
+//             printf("bye\n");
+//             break;
+//         }
+//     }
+//     return 0;
+// }
+
+
+
+
+
 
 
 
@@ -456,6 +448,21 @@ public:
         __size = 0;
     }
 
+    const
+    T& operator[](int idx) const
+    {
+        int el = __head + idx;
+        el = (el < N) ? el : N % el;
+        return __mas[el];
+    }
+
+    T& operator[](int idx)
+    {
+        int el = __head + idx;
+        el = (el < N) ? el : N % el;
+        return __mas[el];
+    }
+
 private:
     T __mas[N];
     int __head = 0;
@@ -483,80 +490,89 @@ int main(int argc, char *argv[])
     freopen("in.txt", "r", stdin);
 #   endif;
 
-    Deque<int> myDeq;
-    //Deque<Deque<int>> my;
-    //my.push_back(myDeq);
 
-    while(1)
+    Deque<int> myDeq;
+
+    char comand[10];
+    while (scanf("%s", comand) == 1)
     {
-        std::string comand;
-        std::cin >> comand;
         int value;
 
-        if (!comand.compare("push_front"))
+        // Deque<Deque<int>> my;
+        // my.push_back(myDeq);
+        // {
+        //     std::stringstream os_;
+        //     for (int i = 0; i < my.size(); ++i)
+        //         for (int j = 0; j < my[i].size(); ++j)
+        //         os_ << my[i][j] << " ";
+        //     cout << os_.str() << endl;
+        //     cout << "------------" << endl;
+        // }
+
+        if (!strcmp(comand,"push_front"))
         {
-            std::cin >> value;
+            scanf("%d", &value);
             myDeq.push_front(value);
-            LOGO("ok");
+            printf("ok\n");
             continue;
         }
 
-        if (!comand.compare("push_back"))
+        if (!strcmp(comand,"push_back"))
         {
-            std::cin >> value;
+            scanf("%d", &value);
             myDeq.push_back(value);
-            LOGO("ok");
+            printf("ok\n");
             continue;
         }
 
-        if(!comand.compare("pop_front"))
+        if(!strcmp(comand,"pop_front"))
         {
             if(myDeq.size())
-                LOGO(myDeq.pop_front());
+                printf("%d\n",myDeq.pop_front());
             else
-                LOGO("error");
+                printf("error\n");
 
             continue;
         }
-        if(!comand.compare("pop_back"))
+        if(!strcmp(comand,"pop_back"))
         {
             if(myDeq.size())
-                LOGO(myDeq.pop_back());
+                printf("%d\n",myDeq.pop_back());
             else
-                LOGO("error");
+                printf("error\n");
 
             continue;
         }
-        if(!comand.compare("front"))
+        if(!strcmp(comand,"front"))
         {
             if(myDeq.size())
-                LOGO(myDeq.front());
+                printf("%d\n",myDeq.front());
             else
-                LOGO("error");
+                printf("error\n");
             continue;
         }
-        if(!comand.compare("back"))
+        if(!strcmp(comand,"back"))
         {
             if(myDeq.size())
-            LOGO(myDeq.back());
+            printf("%d\n",myDeq.back());
             else
-                LOGO("error");
+                printf("error\n");
             continue;
         }
-        if(!comand.compare("size"))
+        if(!strcmp(comand,"size"))
         {
-            LOGO(myDeq.size());
+            printf("%d\n",myDeq.size());
             continue;
         }
-        if(!comand.compare("clear"))
+        if(!strcmp(comand,"clear"))
         {
             myDeq.clear();
-            LOGO("ok");
+            printf("ok\n");
             continue;
         }
-        if(!comand.compare("exit"))
+        if(!strcmp(comand,"exit"))
         {
-            LOGO("bye");
+            printf("bye\n");
             break;
         }
     }
@@ -1410,3 +1426,229 @@ int main(int argc, char *argv[])
     go(0);
 }
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//#include <iostream>
+//#include <stdio.h>
+//#include <string.h>
+
+//template<typename T>
+//class Dequeue
+//{
+//public: struct Node
+//    {
+//        Node (T _val)
+//        {
+//            prev = NULL;
+//            next = NULL;
+//            val = _val;
+//        }
+//        Node* prev;
+//        Node* next;
+//        T val;
+//    };
+//    Dequeue()
+//    {
+//        head = NULL;
+//        tail = NULL;
+//        mSize = 0;
+//    }
+//    void push_back(T val)
+//    {
+//        Node* node = new Node(val);
+//        if (tail == NULL)
+//        {
+//            head = node;
+//            tail = node;
+//        }
+//        else
+//        {
+//            tail->next = node;
+//            node->prev = tail;
+//            tail = node;
+//        }
+//        mSize++;
+//        printf("ok\n");
+//    }
+//    void push_front(T val)
+//    {
+//        Node* node = new Node(val);
+//        if (head == NULL)
+//        {
+//            head = node;
+//            tail = node;
+//        }
+//        else
+//        {
+//            head->prev = node;
+//            node->next = head;
+//            head = node;
+//        }
+//        mSize++;
+//        printf("ok\n");
+//    }
+//    T pop_back()
+//    {
+//        T val = tail->val;
+//        if (tail == head)
+//        {
+//            tail = NULL;
+//            delete head;
+//            head = NULL;
+//        }
+//        else
+//        {
+//            Node* node = tail;
+//            tail = tail->prev;
+//            tail->next = NULL;
+//            delete node;
+//        }
+//        mSize--;
+//        return val;
+//    }
+//    T pop_front()
+//    {
+//        T val = head->val;
+//        if (tail == head)
+//        {
+//            tail = NULL;
+//            delete head;
+//            head = NULL;
+//        }
+//        else
+//        {
+//            Node* node = head;
+//            head = head->next;
+//            head->prev = NULL;
+//            delete node;
+//        }
+//        mSize--;
+//        return val;
+//    }
+//    inline T front()
+//    {
+//        return head->val;
+//    }
+//    inline T back()
+//    {
+//        return tail->val;
+//    }
+//    inline size_t size ()
+//    {
+//        return mSize;
+//    }
+//    void clear()
+//    {
+//        Node* node = head;
+//        Node* prev = NULL;
+//        while (node!= NULL)
+//        {
+//            if(prev != NULL)
+//            {
+//                delete prev;
+//            }
+//            prev = node;
+//            node = node->next;
+//        }
+//        delete prev;
+//        head = NULL;
+//        tail = NULL;
+//        mSize = 0;
+//        printf("ok\n");
+//    }
+//private: Node* head;
+//    Node* tail;
+//    size_t mSize;
+//};
+//int main()
+//{
+//    //freopen("/home/dborysenko/CppProject/Dequeue/input.txt", "r", stdin);
+//    char command[10];
+//    Dequeue<int> dequeue;
+//    while (scanf("%s", command) == 1)
+//    {
+//        if (strcmp(command, "push_front") == 0)
+//        {
+//            int val;
+//            scanf("%d\n", &val);
+//            dequeue.push_front(val);
+//        }
+//        else if (strcmp(command, "push_back") == 0)
+//        {
+//            int val;
+//            scanf("%d\n", &val);
+//            dequeue.push_back(val);
+//        }
+//        else if (strcmp(command, "pop_back") == 0)
+//        {
+//            if (dequeue.size())
+//            {
+//                printf("%d\n", dequeue.pop_back());
+//            }
+//            else
+//            {
+//                printf("error\n");
+//            }
+//        }
+//        else if (strcmp(command, "pop_front") == 0)
+//        {
+//            if (dequeue.size())
+//            {
+//                printf("%d\n", dequeue.pop_front());
+//            }
+//            else
+//            {
+//                printf("error\n");
+//            }
+//        }
+//        else if (strcmp(command, "size") == 0)
+//        {
+//            printf("%d\n", dequeue.size());
+//        }
+//        else if (strcmp(command, "clear") == 0)
+//        {
+//            dequeue.clear();
+//        }
+//        else if (strcmp(command, "back") == 0)
+//        {
+//            if (dequeue.size())
+//            {
+//                printf("%d\n", dequeue.back());
+//            }
+//            else
+//            {
+//                printf("error\n");
+//            }
+//        }
+//        else if (strcmp(command, "front") == 0)
+//        {
+//            if (dequeue.size() > 0)
+//            {
+//                printf("%d\n", dequeue.front());
+//            }
+//            else
+//            {
+//                printf("error\n");
+//            }
+//        }
+//        else if (strcmp(command, "exit") == 0)
+//        {
+//            printf("bye\n");
+//        }
+//    }
+//    return 0;
+//}
