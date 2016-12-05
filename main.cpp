@@ -384,7 +384,7 @@ template <class T, int N = 10>
 class Deque
 {
 public:
-    void push_back(T el)
+    void push_back(const T& el)
     {
         if (__size)
             __inc(__tail);
@@ -393,7 +393,7 @@ public:
         ++__size;
     }
 
-    void push_front(T el)
+    void push_front(const T& el)
     {
         if (__size)
             __dec(__head);
@@ -426,42 +426,42 @@ public:
         }
     }
 
-    T front()
+    inline T front() const
     {
         return __mas[__head];
     }
 
-    T back()
+    inline T back() const
     {
         return __mas[__tail];
     }
 
-    int size()
+    inline int size() const
     {
         return __size;
     }
 
-    void clear()
+    inline void clear()
     {
         __tail = 0;
         __head = 0;
         __size = 0;
     }
 
-    const
-    T& operator[](int idx) const
-    {
-        int el = __head + idx;
-        el = (el < N) ? el : N % el;
-        return __mas[el];
-    }
+//    const
+//    T& operator[](int idx) const
+//    {
+//        int el = __head + idx;
+//        el = (el < N) ? el : N % el;
+//        return __mas[el];
+//    }
 
-    T& operator[](int idx)
-    {
-        int el = __head + idx;
-        el = (el < N) ? el : N % el;
-        return __mas[el];
-    }
+//    T& operator[](int idx)
+//    {
+//        int el = __head + idx;
+//        el = (el < N) ? el : N % el;
+//        return __mas[el];
+//    }
 
 private:
     T __mas[N];
@@ -469,13 +469,13 @@ private:
     int __tail = 0;
     int __size = 0;
 
-    void __inc(int& el)
+    inline void __inc(int& el)
     {
         ++el;
         el = (el < N) ? el : 0;
     }
 
-    void __dec(int& el)
+    inline void __dec(int& el)
     {
         --el;
         el = (el >= 0) ? el : N + el;
@@ -483,101 +483,207 @@ private:
 
 };
 
-int main(int argc, char *argv[])
-{
+//template <class T>
+//class node
+//{
+//public:
+//    node(T el, node<T>*prev = 0, node<T>*next = 0):val(el), _prev(prev), _next(next){}
+//    node<T>* _prev;
+//    node<T>* _next;
+//    T val;
+//};
 
-#   ifdef _EollloE_
-    freopen("in.txt", "r", stdin);
-#   endif;
+
+//template <class T>
+//class Deque
+//{
+//public:
+//    void push_front(const T& el)
+//    {
+//        ++_size;
+//        if(_size - 1)
+//        {
+//            _head->_prev = new node<T>(el,0,_head);
+//            _head = _head->_prev;
+//            return;
+//        }
+//        _head = new node<T>(el);
+//        _tail = _head;
+//    }
+
+//    void push_back(const T& el)
+//    {
+//        ++_size;
+//        if(_size - 1)
+//        {
+//            _tail->_next = new node<T>(el,_tail);
+//            _tail = _tail->_next;
+//            return;
+//        }
+//        _head = new node<T>(el);
+//        _tail = _head;
+//    }
+
+//    int size()
+//    {
+//        return _size;
+//    }
+
+//    T pop_back()
+//    {
+//        T el;
+//        node<T>* tmp = _tail;
+//        _tail = _tail->_prev;
+//        if (tmp)
+//        {
+//            el = tmp->val;
+//            --_size;
+//            delete tmp;
+//        }
+//        return  el;
+//    }
+
+//    T pop_front()
+//    {
+//        T el;
+//        node<T>* tmp = _head;
+//        _head = _head->_next;
+//        if (tmp)
+//        {
+//            el = tmp->val;
+//            --_size;
+//            delete tmp;
+//        }
+//        return  el;
+//    }
+
+//    void clear()
+//    {
+//        for (;  _size; )
+//            this->pop_back();
+
+//        _tail = 0;
+//        _head = 0;
+//    }
+
+//    T back()
+//    {
+//        if (_size)
+//            return _tail->val;
+//    }
+
+//    T front()
+//    {
+//        if (_size)
+//            return _head->val;
+//    }
+
+//private:
+//    node<T>* _tail = 0;
+//    node<T>* _head = 0;
+//    int _size = 0;
+//};
 
 
-    Deque<int> myDeq;
+//int main(int argc, char *argv[])
+//{
 
-    char comand[10];
-    while (scanf("%s", comand) == 1)
-    {
-        int value;
+//#   ifdef _EollloE_
+//    freopen("in.txt", "r", stdin);
+//#   endif;
 
-        // Deque<Deque<int>> my;
-        // my.push_back(myDeq);
-        // {
-        //     std::stringstream os_;
-        //     for (int i = 0; i < my.size(); ++i)
-        //         for (int j = 0; j < my[i].size(); ++j)
-        //         os_ << my[i][j] << " ";
-        //     cout << os_.str() << endl;
-        //     cout << "------------" << endl;
-        // }
 
-        if (!strcmp(comand,"push_front"))
-        {
-            scanf("%d", &value);
-            myDeq.push_front(value);
-            printf("ok\n");
-            continue;
-        }
+//    std::ostringstream os_;
+//    os_.str().size() == 5;
+//    Deque<int> myDeq;
+//    Deque<Deque<int>> my;
+//    my.push_back(myDeq);
 
-        if (!strcmp(comand,"push_back"))
-        {
-            scanf("%d", &value);
-            myDeq.push_back(value);
-            printf("ok\n");
-            continue;
-        }
+//    char comand[10];
+//    while (scanf("%s", comand) == 1)
+//    {
+//        int value;
 
-        if(!strcmp(comand,"pop_front"))
-        {
-            if(myDeq.size())
-                printf("%d\n",myDeq.pop_front());
-            else
-                printf("error\n");
+//        // Deque<Deque<int>> my;
+//        // my.push_back(myDeq);
+//        // {
+//        //     std::stringstream os_;
+//        //     for (int i = 0; i < my.size(); ++i)
+//        //         for (int j = 0; j < my[i].size(); ++j)
+//        //         os_ << my[i][j] << " ";
+//        //     cout << os_.str() << endl;
+//        //     cout << "------------" << endl;
+//        // }
 
-            continue;
-        }
-        if(!strcmp(comand,"pop_back"))
-        {
-            if(myDeq.size())
-                printf("%d\n",myDeq.pop_back());
-            else
-                printf("error\n");
+//        if (!strcmp(comand,"push_front"))
+//        {
+//            scanf("%d", &value);
+//            myDeq.push_front(value);
+//            printf("ok\n");
+//            continue;
+//        }
 
-            continue;
-        }
-        if(!strcmp(comand,"front"))
-        {
-            if(myDeq.size())
-                printf("%d\n",myDeq.front());
-            else
-                printf("error\n");
-            continue;
-        }
-        if(!strcmp(comand,"back"))
-        {
-            if(myDeq.size())
-            printf("%d\n",myDeq.back());
-            else
-                printf("error\n");
-            continue;
-        }
-        if(!strcmp(comand,"size"))
-        {
-            printf("%d\n",myDeq.size());
-            continue;
-        }
-        if(!strcmp(comand,"clear"))
-        {
-            myDeq.clear();
-            printf("ok\n");
-            continue;
-        }
-        if(!strcmp(comand,"exit"))
-        {
-            printf("bye\n");
-            break;
-        }
-    }
-    return 0;
-}
+//        if (!strcmp(comand,"push_back"))
+//        {
+//            scanf("%d", &value);
+//            myDeq.push_back(value);
+//            printf("ok\n");
+//            continue;
+//        }
+
+//        if(!strcmp(comand,"pop_front"))
+//        {
+//            if(myDeq.size())
+//                printf("%d\n",myDeq.pop_front());
+//            else
+//                printf("error\n");
+
+//            continue;
+//        }
+//        if(!strcmp(comand,"pop_back"))
+//        {
+//            if(myDeq.size())
+//                printf("%d\n",myDeq.pop_back());
+//            else
+//                printf("error\n");
+
+//            continue;
+//        }
+//        if(!strcmp(comand,"front"))
+//        {
+//            if(myDeq.size())
+//                printf("%d\n",myDeq.front());
+//            else
+//                printf("error\n");
+//            continue;
+//        }
+//        if(!strcmp(comand,"back"))
+//        {
+//            if(myDeq.size())
+//            printf("%d\n",myDeq.back());
+//            else
+//                printf("error\n");
+//            continue;
+//        }
+//        if(!strcmp(comand,"size"))
+//        {
+//            printf("%d\n",myDeq.size());
+//            continue;
+//        }
+//        if(!strcmp(comand,"clear"))
+//        {
+//            myDeq.clear();
+//            printf("ok\n");
+//            continue;
+//        }
+//        if(!strcmp(comand,"exit"))
+//        {
+//            printf("bye\n");
+//            break;
+//        }
+//    }
+//    return 0;
+//}
 
 
 
@@ -1240,7 +1346,7 @@ int main(int argc, char *argv[])
 */
 
 
-/*
+
 //DFS & BFS
 int N;
 int** a;
@@ -1393,7 +1499,7 @@ int main(int argc, char *argv[])
     dfs(EdgesDFS.back());
 #endif
 }
-*/
+
 
 /*
 const int n = 7;
