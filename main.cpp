@@ -380,7 +380,7 @@
 //};
 
 
-template <class T, int N = 10>
+template <class T, int N = 20>
 class Deque
 {
 public:
@@ -448,20 +448,20 @@ public:
         __size = 0;
     }
 
-//    const
-//    T& operator[](int idx) const
-//    {
-//        int el = __head + idx;
-//        el = (el < N) ? el : N % el;
-//        return __mas[el];
-//    }
+    const
+    T& operator[](int idx) const
+    {
+        int el = __head + idx;
+        el = (el < N) ? el : N % el;
+        return __mas[el];
+    }
 
-//    T& operator[](int idx)
-//    {
-//        int el = __head + idx;
-//        el = (el < N) ? el : N % el;
-//        return __mas[el];
-//    }
+    T& operator[](int idx)
+    {
+        int el = __head + idx;
+        el = (el < N) ? el : N % el;
+        return __mas[el];
+    }
 
 private:
     T __mas[N];
@@ -740,31 +740,32 @@ endPatch; img += toNextLine)
 */
 
 
-/// ###########################################################
-/// ##################### [binary search] #####################
-/// ###########################################################
+///// ###########################################################
+///// ##################### [binary search] #####################
+///// ###########################################################
 
 //template <class T>
 //int findBin(T val, T* mas, int st, int end)
 //{
 //    int index = -1;
-//    while (index == -1)
+//    while (st != end)
 //    {
-
 //        if (st == end)
-//            index = st;
+//        {
+//            index = (val == mas[st]) ? st : index;
+//            return index;
+//        }
 
-//        int index05 = st + (end - st) / 2;
+//        int index05 = (st + end) / 2;
 
 //        if (val == mas[index05])
-//            index = index05;
+//            return index05;
 
 //        if (val == mas[st])
-//            index = st;
+//            return st;
 
 //        if (val == mas[end])
-//            index = end;
-
+//            return end;
 
 //        if ((mas[st] < val) && (val < mas[index05]))
 //        {
@@ -777,6 +778,7 @@ endPatch; img += toNextLine)
 //            st = index05;
 //            continue;
 //        }
+//        return index;
 //    }
 //    return index;
 //}
@@ -785,14 +787,17 @@ endPatch; img += toNextLine)
 //int main(int argc, char *argv[])
 //{
 //    srand((unsigned)time(NULL));
-//    __masI mas(rand()%35 + 15,1);
+//    __masI mas(rand()%2 + 2,1);
 //    mas.value_set_from(1);
 //    mas.LOG_mas();
 
-//    int value = rand()%(mas.get_cols_m_rows()-1);
+//    int value = mas.get_cols_m_rows()/2;0;rand()%(mas.get_cols_m_rows());
 //    LOGN(value);
 //    int index = findBin(value, mas.get_ptr(), (int)0, (int)mas.get_cols()-1);
-//    LOGN(value << ": mas[" << index << "]=" << mas.get_ptr()[index]);
+//    if (index >= 0)
+//        LOGN(value << ": mas[" << index << "]=" << mas.get_ptr()[index])
+//    else
+//        LOGN("not found");
 //}
 
 
@@ -1348,7 +1353,7 @@ int main(int argc, char *argv[])
 
 
 //DFS & BFS
-int N;
+int NofEl;
 int** a;
 template <class T>
 void __setData(T*& mas, int N, T value = 0)
@@ -1364,9 +1369,10 @@ void bfs(int St)
 {
     bool* used;
 
-    N += 1;
-    __setData(used, N);
+    NofEl += 1;
+    __setData(used, NofEl);
 
+//#define deque Deque
     deque<int> Edges;
 
     Edges.push_back(St);
@@ -1384,7 +1390,7 @@ void bfs(int St)
         os_.clear();
         os_ << std::right;
 
-        for (int j = 0; j < N; ++j)
+        for (int j = 0; j < NofEl; ++j)
         {
             if ( a[St][j] && !used[j] )
             {
@@ -1429,48 +1435,62 @@ void bfs(int St)
 
 
 bool* usedDFS;
-std::vector<int> EdgesDFS;
+/*std::vector*/Deque<int> EdgesDFS;
+Deque<Deque<int, 20>, 20> dfsElist;
 
 void dfs(int St)
 {
-    static int size0 = 1;
-    static int size1 = 1;
+#if 0
+    static int size = 1;
     usedDFS[St] = true;
 
-    for (int j = 0; j <= N; ++j)
+    for (int j = 0; j <= NofEl; ++j)
     {
         if ( a[St][j] && !usedDFS[j] )
         {
             EdgesDFS.push_back(j);
-            size0++;
-            //size += EdgesDFS.size();
-            //os_ << j << " ";
             dfs(j);
         }
     }
 
-    if (size0 > size1)
+    if (EdgesDFS.size() > size)
     {
-        size1 = size0;
+        size = EdgesDFS.size();
         int* ptr = &EdgesDFS[0];
         __LOG_MAS_simpley(ptr, EdgesDFS.size());
     }
     EdgesDFS.pop_back();
-    size0 = EdgesDFS.size();
-    size1 = size0;
+    size = EdgesDFS.size();
+#else
+    static int size = 1;
+    usedDFS[St] = true;
+    int sizeSt = dfsElist[St].size();
+    for (int j = 0; j < sizeSt; ++j)
+    {
+        int kandidat = dfsElist[St][j];
+        if ( !usedDFS[kandidat] )
+        {
+            EdgesDFS.push_back(kandidat);
+            dfs(kandidat);
+        }
+    }
+
+    if (EdgesDFS.size() > size)
+    {
+        size = EdgesDFS.size();
+        int* ptr = &EdgesDFS[0];
+        __LOG_MAS_simpley(ptr, EdgesDFS.size());
+    }
+    EdgesDFS.pop_back();
+    size = EdgesDFS.size();
+#endif
 }
 
 int main(int argc, char *argv[])
 {
-    std::string path = getCurDirStr();
-    path += std::string("/in.txt");
-
-    std::ifstream in(path);
-    path.clear();
-    cin.rdbuf(in.rdbuf());
-
+    freopen("in.txt", "r", stdin);
+#   if 0
     cin >> N;
-
     a = new int* [N + 1];
     a[0] = new int [(N + 1)*(N + 1)];
     for (int i = 1; i < N + 1; ++i)
@@ -1491,47 +1511,100 @@ int main(int argc, char *argv[])
     __masI::LOG_mas(&a[0][0], N + 1, N + 1);
     new_line;
 
-#if d
+#   if 0
     bfs(1);
-#else
+#   else
     __setData(usedDFS, N);
     EdgesDFS.push_back(1);
     dfs(EdgesDFS.back());
+#   endif
+
+
+#else
+
+    cin >> NofEl;
+    const int sizeofE = NofEl;
+    Deque<int, 20> m;
+
+    for (int i = 0; i < 20; ++i)
+        dfsElist.push_back(m);
+
+    int p, q;
+    while(cin >> p >> q)
+    {
+        dfsElist[p].push_back(q);
+        dfsElist[q].push_back(p);
+    }
+
+    for (int i = 0; i < dfsElist.size(); ++i)
+        __masI::LOG_mas(&dfsElist[i][0], dfsElist[i].size(), 1);
+
+
+
+    __setData(usedDFS, NofEl);
+    EdgesDFS.push_back(1);
+    dfs(EdgesDFS.back());
+
 #endif
 }
 
 
-/*
-const int n = 7;
-int used[n];
 
-void go(int index)
-{
-    if (index == n)
-    {
-        __LOG_MAS_simpley(used, n);
-    }
-    else
-    {
-        used[index] = 0;
-        go(index + 1);
+//const int n = 14;
+//int used[n];int perm[n];
+//void go(int index)
+//{
+//    if (index == n)
+//    {
+//        for (int i = 0; i < n; ++i)
+//            std::cout << perm[i] << " ";
+//        std::cout << std::endl;
+//    }
+//    else
+//        for (int i = 0; i < n; ++i)
+//            if (!used[i])
+//            {
+//                used[i] = true;
+//                perm[index] = i;
+//                go(index + 1);
+//                used[i] = false;
+//            }
+//}
+//void go(int index)
+//{
+//    if (index == n)
+//    {
+//         //__LOG_MAS_simpley(used, n);
 
-        used[index] = 1;
-        go(index + 1);
+//        _LOGN__staticStream__.clear();
+//        _LOGN__staticStream__.str("");
+//        for (int i = 0; i < n; ++i)
+//            if (used[i])
+//            _LOGN__staticStream__ << /*perm[i]*/i << " ";
+//        LOGN(_LOGN__staticStream__.str());
 
-        used[index] = 2;
-        go(index + 1);
+//    }
+//    else
+//    {
+//        used[index] = 0;
+//        go(index + 1);
 
-        used[index] = 3;
-        go(index + 1);
-    }
-}
+//        used[index] = 1;
+//        go(index + 1);
 
-int main(int argc, char *argv[])
-{
-    go(0);
-}
-*/
+//        //used[index] = 2;
+//        //go(index + 1);
+//        //used[index] = 3;
+//        //go(index + 1);
+//    }
+//}
+
+//int main(int argc, char *argv[])
+//{
+//    __masI::value_set_from(perm, n, 1);
+//    go(0);
+//}
+
 
 
 
