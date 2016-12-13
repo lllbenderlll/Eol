@@ -1435,7 +1435,7 @@ void bfs(int St)
 
 
 bool* usedDFS;
-/*std::vector*/Deque<int> EdgesDFS;
+/*std::vector*/Deque<int> EdgesFA;
 Deque<Deque<int, 20>, 20> dfsElist;
 
 void dfs(int St)
@@ -1470,19 +1470,19 @@ void dfs(int St)
         int kandidat = dfsElist[St][j];
         if ( !usedDFS[kandidat] )
         {
-            EdgesDFS.push_back(kandidat);
+            EdgesFA.push_back(kandidat);
             dfs(kandidat);
         }
     }
 
-    if (EdgesDFS.size() > size)
+    if (EdgesFA.size() > size)
     {
-        size = EdgesDFS.size();
-        int* ptr = &EdgesDFS[0];
-        __LOG_MAS_simpley(ptr, EdgesDFS.size());
+        size = EdgesFA.size();
+        int* ptr = &EdgesFA[0];
+        __LOG_MAS_simpley(ptr, EdgesFA.size());
     }
-    EdgesDFS.pop_back();
-    size = EdgesDFS.size();
+    EdgesFA.pop_back();
+    size = EdgesFA.size();
 #endif
 }
 
@@ -1539,11 +1539,13 @@ int main(int argc, char *argv[])
     for (int i = 0; i < dfsElist.size(); ++i)
         __masI::LOG_mas(&dfsElist[i][0], dfsElist[i].size(), 1);
 
-
-
+#   if 1
     __setData(usedDFS, NofEl);
-    EdgesDFS.push_back(1);
-    dfs(EdgesDFS.back());
+    EdgesFA.push_back(1);
+    dfs(EdgesFA.back());
+#   else
+
+#   endif
 
 #endif
 }
