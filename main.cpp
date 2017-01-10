@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <streambuf>
 #define LOGO(...) std::cout << __VA_ARGS__ << std::endl
 
 #ifdef _EollloE_
@@ -386,13 +387,12 @@ class Deque
 public:
     void push_back(const T& el)
     {
-        if (__size)
+        if (__size)// (__size > 0)
             __inc(__tail);
 
         __mas[__tail] = el;
         ++__size;
     }
-
     void push_front(const T& el)
     {
         if (__size)
@@ -413,7 +413,6 @@ public:
             return el;
         }
     }
-
     T pop_back()
     {
         if (__size)
@@ -430,7 +429,6 @@ public:
     {
         return __mas[__head];
     }
-
     inline T back() const
     {
         return __mas[__tail];
@@ -440,7 +438,6 @@ public:
     {
         return __size;
     }
-
     inline void clear()
     {
         __tail = 0;
@@ -451,16 +448,11 @@ public:
     const
     T& operator[](int idx) const
     {
-        int el = __head + idx;
-        el = (el < N) ? el : N % el;
-        return __mas[el];
+        return __mas[(idx + __head) % N];
     }
-
     T& operator[](int idx)
     {
-        int el = __head + idx;
-        el = (el < N) ? el : N % el;
-        return __mas[el];
+        return __mas[(idx + __head) % N];
     }
 
 private:
@@ -471,16 +463,16 @@ private:
 
     inline void __inc(int& el)
     {
-        ++el;
-        el = (el < N) ? el : 0;
+        ++el;//el = (el < N) ? el : 0;
+        if (el < N) return;
+        el = 0;
     }
-
     inline void __dec(int& el)
     {
-        --el;
-        el = (el >= 0) ? el : N + el;
+        --el;//el = (el >= 0) ? el : N + el;
+        if (el >= 0) return;
+        el = N + el;
     }
-
 };
 
 //template <class T>
@@ -1441,6 +1433,8 @@ Deque<Deque<int, 20>, 20> dfsElist;
 void dfs(int St)
 {
 #if 0
+
+    //matrica smegnosty
     static int size = 1;
     usedDFS[St] = true;
 
@@ -1461,11 +1455,14 @@ void dfs(int St)
     }
     EdgesDFS.pop_back();
     size = EdgesDFS.size();
+
 #else
+
+    //matrica sviaznosty
     static int size = 1;
     usedDFS[St] = true;
-    int sizeSt = dfsElist[St].size();
-    for (int j = 0; j < sizeSt; ++j)
+
+    for (int j = 0, sizeSt = dfsElist[St].size(); j < sizeSt; ++j)
     {
         int kandidat = dfsElist[St][j];
         if ( !usedDFS[kandidat] )
@@ -1486,8 +1483,17 @@ void dfs(int St)
 #endif
 }
 
-int main(int argc, char *argv[])
+
+
+
+
+
+
+int main_dfs_bfs(int argc, char *argv[])
 {
+//    int dasdasd = 15;
+//    LOG_Value(dasdasd);
+
     freopen("in.txt", "r", stdin);
 #   if 0
     cin >> N;
@@ -1523,11 +1529,11 @@ int main(int argc, char *argv[])
 #else
 
     cin >> NofEl;
-    const int sizeofE = NofEl;
-    Deque<int, 20> m;
+    //const int sizeofE = NofEl;
+    Deque<int, 20> tmp;
 
     for (int i = 0; i < 20; ++i)
-        dfsElist.push_back(m);
+        dfsElist.push_back(tmp);
 
     int p, q;
     while(cin >> p >> q)
@@ -1537,16 +1543,14 @@ int main(int argc, char *argv[])
     }
 
     for (int i = 0; i < dfsElist.size(); ++i)
-        __masI::LOG_mas(&dfsElist[i][0], dfsElist[i].size(), 1);
+    {
+        __masI::LOG_mas(&dfsElist[i][0], dfsElist[i].size(), 1, 0, "", 0);
+        new_line;
+    }
 
-#   if 1
     __setData(usedDFS, NofEl);
     EdgesFA.push_back(1);
     dfs(EdgesFA.back());
-#   else
-
-#   endif
-
 #endif
 }
 
@@ -1833,3 +1837,132 @@ int main(int argc, char *argv[])
 //    }
 //    return 0;
 //}
+
+
+
+const int fN = 9;
+const int fM = 9;
+int fild[fN][fM] = {
+{0,  0,  0,  0,  0,  0,  0,  0,  0},
+{1,  0,  0,  0,  0,  0,  0,  0,  0},
+{0,  0,  0,255,  0,  0,  0,  0,  0},
+{0,  0,  0,255,  0,  0,  0,  0,  0},
+{0,  0,  0,255,  0,  0,  0,  0,  0},
+{0,  0,  0,255,  0,  2,  0,  0,  0},
+{0,  0,  0,  0,  0,  0,  0,  0,  0},
+{0,  0,  0,  0,  0,  0,  0,  0,  0},
+{0,  0,  0,  0,  0,  0,  0,  0,  0}
+};
+
+
+int fildM[fN][fM];
+
+
+struct point
+{
+    point(int _x, int _y):x(_x),y(_y){}
+    point():x(0),y(0){}
+    int x = 0;
+    int y = 0;
+};
+point from;
+point to;
+
+
+
+void findMinLengthOfPath(point& step)
+{
+    static Deque<point, fN * fM> points;
+    int thisStepValue = fildM[step.y][step.x] + 1;
+
+
+    if (step.y - 1 >= 0 )
+    {
+        if((fildM[step.y - 1][step.x] == 0) && !fild[step.y - 1][step.x])
+        {
+            points.push_back(point(step.x, step.y - 1));
+            fildM[step.y - 1][step.x] = thisStepValue;
+            __masI::LOG_mas(&fildM[0][0],fM,fN);
+        }
+        if ((step.x == to.x) && (step.y - 1 == to.y))
+        {
+            LOGN(thisStepValue);
+            return;
+        }
+
+    }
+
+    if (step.y + 1 < fM)
+    {
+        if((fildM[step.y + 1][step.x] == 0) && !fild[step.y + 1][step.x])
+        {
+            points.push_back(point(step.x, step.y + 1));
+            fildM[step.y + 1][step.x] = thisStepValue;
+            __masI::LOG_mas(&fildM[0][0],fM,fN);
+        }
+        if ((step.x == to.x) && (step.y + 1 == to.y))
+        {
+            LOGN(thisStepValue);
+            return;
+        }
+
+    }
+
+
+    if (step.x - 1 >= 0)
+    {
+        if((fildM[step.y][step.x - 1] == 0) && !fild[step.y][step.x - 1])
+        {
+            points.push_back(point(step.x - 1, step.y));
+            fildM[step.y][step.x - 1] = thisStepValue;
+            __masI::LOG_mas(&fildM[0][0],fM,fN);
+        }
+        if ((step.x - 1 == to.x) && (step.y == to.y))
+        {
+            LOGN(thisStepValue);
+            return;
+        }
+
+    }
+
+    if (step.x + 1 < fN)
+    {
+        if((fildM[step.y][step.x + 1] == 0) && !fild[step.y][step.x + 1])
+        {
+            points.push_back(point(step.x + 1, step.y));
+            fildM[step.y][step.x + 1] = thisStepValue;
+            __masI::LOG_mas(&fildM[0][0],fM,fN);
+        }
+        if ((step.x + 1 == to.x) && (step.y == to.y))
+        {
+            LOGN(thisStepValue);
+            return;
+        }
+    }
+    point tmp(points.pop_front());
+    findMinLengthOfPath(tmp);
+
+    points.clear();
+
+}
+
+
+
+int main(int argc, char *argv[])
+{
+
+
+    for (int i = 0; i < fN; ++i)
+        for (int j = 0; j < fM; ++j)
+            fildM[i][j] = 0;
+
+    from.x = 0;
+    from.y = 1;
+
+    to.x = 5;
+    to.y = 5;
+
+    fildM[from.y][from.x] = 1;
+    findMinLengthOfPath(from);
+
+}
