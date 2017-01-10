@@ -1873,74 +1873,77 @@ point to;
 void findMinLengthOfPath(point& step)
 {
     static Deque<point, fN * fM> points;
-    int thisStepValue = fildM[step.y][step.x] + 1;
 
-
-    if (step.y - 1 >= 0 )
+    while(1)
     {
-        if((fildM[step.y - 1][step.x] == 0) && !fild[step.y - 1][step.x])
+        int thisStepValue = fildM[step.y][step.x] + 1;
+        if (step.y - 1 >= 0 )
         {
-            points.push_back(point(step.x, step.y - 1));
-            fildM[step.y - 1][step.x] = thisStepValue;
-            __masI::LOG_mas(&fildM[0][0],fM,fN);
-        }
-        if ((step.x == to.x) && (step.y - 1 == to.y))
-        {
-            LOGN(thisStepValue);
-            return;
+            if((fildM[step.y - 1][step.x] == 0) && !fild[step.y - 1][step.x])
+            {
+                points.push_back(point(step.x, step.y - 1));
+                fildM[step.y - 1][step.x] = thisStepValue;
+                __masI::LOG_mas(&fildM[0][0],fM,fN);
+            }
+            if ((step.x == to.x) && (step.y - 1 == to.y))
+            {
+                LOGN(thisStepValue);
+                break;//return;
+            }
+
         }
 
+        if (step.y + 1 < fM)
+        {
+            if((fildM[step.y + 1][step.x] == 0) && !fild[step.y + 1][step.x])
+            {
+                points.push_back(point(step.x, step.y + 1));
+                fildM[step.y + 1][step.x] = thisStepValue;
+                __masI::LOG_mas(&fildM[0][0],fM,fN);
+            }
+            if ((step.x == to.x) && (step.y + 1 == to.y))
+            {
+                LOGN(thisStepValue);
+                break;//return;
+            }
+
+        }
+
+
+        if (step.x - 1 >= 0)
+        {
+            if((fildM[step.y][step.x - 1] == 0) && !fild[step.y][step.x - 1])
+            {
+                points.push_back(point(step.x - 1, step.y));
+                fildM[step.y][step.x - 1] = thisStepValue;
+                __masI::LOG_mas(&fildM[0][0],fM,fN);
+            }
+            if ((step.x - 1 == to.x) && (step.y == to.y))
+            {
+                LOGN(thisStepValue);
+                break;//return;
+            }
+
+        }
+
+        if (step.x + 1 < fN)
+        {
+            if((fildM[step.y][step.x + 1] == 0) && !fild[step.y][step.x + 1])
+            {
+                points.push_back(point(step.x + 1, step.y));
+                fildM[step.y][step.x + 1] = thisStepValue;
+                __masI::LOG_mas(&fildM[0][0],fM,fN);
+            }
+            if ((step.x + 1 == to.x) && (step.y == to.y))
+            {
+                LOGN(thisStepValue);
+                break;//return;
+            }
+        }
+        //point tmp(points.pop_front());
+        //findMinLengthOfPath(tmp);
+        step = points.pop_front();
     }
-
-    if (step.y + 1 < fM)
-    {
-        if((fildM[step.y + 1][step.x] == 0) && !fild[step.y + 1][step.x])
-        {
-            points.push_back(point(step.x, step.y + 1));
-            fildM[step.y + 1][step.x] = thisStepValue;
-            __masI::LOG_mas(&fildM[0][0],fM,fN);
-        }
-        if ((step.x == to.x) && (step.y + 1 == to.y))
-        {
-            LOGN(thisStepValue);
-            return;
-        }
-
-    }
-
-
-    if (step.x - 1 >= 0)
-    {
-        if((fildM[step.y][step.x - 1] == 0) && !fild[step.y][step.x - 1])
-        {
-            points.push_back(point(step.x - 1, step.y));
-            fildM[step.y][step.x - 1] = thisStepValue;
-            __masI::LOG_mas(&fildM[0][0],fM,fN);
-        }
-        if ((step.x - 1 == to.x) && (step.y == to.y))
-        {
-            LOGN(thisStepValue);
-            return;
-        }
-
-    }
-
-    if (step.x + 1 < fN)
-    {
-        if((fildM[step.y][step.x + 1] == 0) && !fild[step.y][step.x + 1])
-        {
-            points.push_back(point(step.x + 1, step.y));
-            fildM[step.y][step.x + 1] = thisStepValue;
-            __masI::LOG_mas(&fildM[0][0],fM,fN);
-        }
-        if ((step.x + 1 == to.x) && (step.y == to.y))
-        {
-            LOGN(thisStepValue);
-            return;
-        }
-    }
-    point tmp(points.pop_front());
-    findMinLengthOfPath(tmp);
 
     points.clear();
 
